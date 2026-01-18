@@ -170,10 +170,23 @@ For enhanced security, you can use credential helpers that integrate with system
 # Install credential helper (example for pass)
 sudo apt-get install pass  # or your package manager
 
+# Initialize pass (required for first-time setup)
+gpg --generate-key  # If you don't have a GPG key
+pass init <your-gpg-key-id>
+
+# Ensure the credential helper executable is in PATH
+# It should be named podman-credential-pass (or similar for other helpers)
+
 # Configure in containers.conf
+mkdir -p ~/.config/containers
 echo '[engine]' >> ~/.config/containers/containers.conf
-echo 'helper = "pass"' >> ~/.config/containers/containers.conf
+echo 'credential_helpers = ["pass"]' >> ~/.config/containers/containers.conf
 ```
+
+**Note:** Credential helpers require:
+- The helper executable must be in your PATH with the naming convention `podman-credential-<helper>`
+- Proper initialization of the credential store (e.g., `pass init` for pass)
+- The helper must support the credential helper protocol
 
 ## Multiple Registry Authentication
 
