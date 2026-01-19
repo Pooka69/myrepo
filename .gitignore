@@ -1,0 +1,11 @@
+# Podman authentication files (should never be committed)
+auth.json
+*.auth.json
+**/containers/auth.json
+
+# Backup files
+*.bak
+*~
+
+# Test artifacts
+test-auth/
