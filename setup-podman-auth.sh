@@ -74,7 +74,7 @@ echo -e "${GREEN}Setup Complete!${NC}"
 echo ""
 echo "What was done:"
 echo "  1. Created persistent directory: ${AUTH_DIR}"
-if [ -n "${RUNTIME_AUTH_FILE}" ] && [ -f "${RUNTIME_AUTH_FILE}" ]; then
+if [ -n "${XDG_RUNTIME_DIR}" ] && [ -f "${XDG_RUNTIME_DIR}/containers/auth.json" ]; then
     echo "  2. Migrated existing credentials from runtime directory"
 fi
 if [ -n "${SHELL_RC}" ]; then

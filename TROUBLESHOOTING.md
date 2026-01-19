@@ -348,8 +348,12 @@ podman system df
 If you're still experiencing issues after trying these solutions:
 
 1. **Gather diagnostic information:**
+   Run the diagnostic commands listed above and save the output:
    ```bash
-   ./gather-diagnostics.sh > podman-diagnostics.txt
+   podman --version > podman-diagnostics.txt
+   podman system info >> podman-diagnostics.txt
+   env | grep -i registry >> podman-diagnostics.txt
+   ls -la ~/.config/containers/ >> podman-diagnostics.txt
    ```
 
 2. **Check Podman logs:**
