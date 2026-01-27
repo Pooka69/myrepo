@@ -23,17 +23,30 @@ usage() {
 
 # List installed programs (from current directory)
 list_programs() {
+    local should_exit="${1:-true}"
     echo "Installed programs:"
     echo ""
     
-    # List text files that represent "programs"
+    # List files that represent "programs" (exclude specific system files)
+    local excluded_files=("uninstall.sh" "hello.txt" "README.md")
     for file in *; do
-        if [ -f "$file" ] && [ "$file" != "uninstall.sh" ] && [ "$file" != "hello.txt" ]; then
-            echo "  - $file"
+        if [ -f "$file" ]; then
+            local skip=false
+            for excluded in "${excluded_files[@]}"; do
+                if [ "$file" = "$excluded" ]; then
+                    skip=true
+                    break
+                fi
+            done
+            if [ "$skip" = false ]; then
+                echo "  - $file"
+            fi
         fi
     done
     
-    exit 0
+    if [ "$should_exit" = "true" ]; then
+        exit 0
+    fi
 }
 
 # Uninstall a program
@@ -50,20 +63,24 @@ uninstall_program() {
         echo "Error: Program '$program_name' not found"
         echo ""
         echo "Available programs:"
-        list_programs
+        list_programs false
         exit 1
     fi
     
-    # Confirm uninstallation
+    # Confirm uninstallation (with 30 second timeout)
     echo "Are you sure you want to uninstall '$program_name'? (y/n)"
-    read -r confirmation
-    
-    if [ "$confirmation" = "y" ] || [ "$confirmation" = "Y" ]; then
-        rm -f "$program_name"
-        echo "Successfully uninstalled '$program_name'"
-        exit 0
+    if read -t 30 -r confirmation; then
+        if [ "$confirmation" = "y" ] || [ "$confirmation" = "Y" ]; then
+            rm -f "$program_name"
+            echo "Successfully uninstalled '$program_name'"
+            exit 0
+        else
+            echo "Uninstallation cancelled"
+            exit 1
+        fi
     else
-        echo "Uninstallation cancelled"
+        echo ""
+        echo "Timeout: No response received. Uninstallation cancelled"
         exit 1
     fi
 }
