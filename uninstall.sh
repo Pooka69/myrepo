@@ -10,10 +10,16 @@ fi
 
 PROGRAM_NAME=$1
 
+# Validate program name to prevent path traversal
+if [[ "$PROGRAM_NAME" == *"/"* ]] || [[ "$PROGRAM_NAME" == *".."* ]]; then
+    echo "Error: Invalid program name. Path traversal not allowed."
+    exit 1
+fi
+
 # Check if the program exists in the current directory
 if [ -e "$PROGRAM_NAME" ]; then
     echo "Uninstalling $PROGRAM_NAME..."
-    if rm -f "$PROGRAM_NAME"; then
+    if rm -rf "$PROGRAM_NAME" 2>/dev/null; then
         echo "Successfully uninstalled $PROGRAM_NAME"
         exit 0
     else
