@@ -20,7 +20,7 @@ To uninstall the `mealie` program:
 
 ### Usage
 
-1. Make sure the script is executable (it should be by default):
+1. Make sure the script is executable:
    ```bash
    chmod +x uninstall.sh
    ```
