@@ -38,10 +38,12 @@ ls -la /dev/kvm
 ```
 Should show: `crw-rw----+ 1 root kvm`
 
-If not accessible:
+If permissions are incorrect:
 ```bash
-sudo chmod 666 /dev/kvm
+sudo chmod 660 /dev/kvm
+sudo chown root:kvm /dev/kvm
 ```
+**Note:** Make sure you've added your user to the kvm group (step 3) and logged out/in before testing.
 
 ### 5. Completely Remove and Reinstall Docker Desktop
 If Docker Desktop is not launching, try a clean reinstall:
